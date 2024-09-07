@@ -6,10 +6,14 @@ import fs from "fs/promises"
 import { notFound, redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 
-const fileSchema = z.instanceof(File, { message: "Required" })
+const fileSchema = typeof File !== 'undefined' 
+  ? z.instanceof(File, { message: "Required" })
+  : z.any();
+
 const imageSchema = fileSchema.refine(
-  file => file.size === 0 || file.type.startsWith("image/")
-)
+  (file) => !file || file.size === 0 || (file.type && file.type.startsWith("image/")),
+  { message: "Must be an image file or empty" }
+);
 
 const addSchema = z.object({
   name: z.string().min(1),
