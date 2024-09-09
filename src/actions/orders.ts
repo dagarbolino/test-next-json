@@ -53,7 +53,8 @@ export async function emailOrderHistory(
       downloadVerificationId: (
         await db.downloadVerification.create({
           data: {
-            expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
+
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
             productId: order.product.id,
           },
         })
@@ -65,10 +66,12 @@ export async function emailOrderHistory(
     from: `Support <${process.env.SENDER_EMAIL}>`,
     to: user.email,
     subject: "Order History",
-    react: <OrderHistoryEmail orders={await Promise.all(orders)} />,
+
+    react: OrderHistoryEmail({ orders: await Promise.all(orders) }),
   })
 
-  if (data.error) {
+
+  if ('error' in data) {
     return { error: "There was an error sending your email. Please try again." }
   }
 
