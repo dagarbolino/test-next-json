@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "./ui/card"
 import { Button } from "./ui/button"
-import Link from "next/link"
 import Image from "next/image"
 
 type ProductCardProps = {
@@ -38,11 +37,7 @@ export function ProductCard({
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
       </CardContent>
-      <CardFooter>
-        <Button asChild size="lg" className="w-full">
-          <Link href={`/products/${id}/purchase`}>Purchase</Link>
-        </Button>
-      </CardFooter>
+
     </Card>
   )
 }

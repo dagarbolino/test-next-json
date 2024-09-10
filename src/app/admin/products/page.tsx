@@ -61,7 +61,7 @@ async function ProductsTable() {
           </TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
-          <TableHead>Orders</TableHead>
+          
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -85,7 +85,7 @@ async function ProductsTable() {
             </TableCell>
             <TableCell>{product.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
-            <TableCell>{formatNumber(product._count.orders)}</TableCell>
+            
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger>
