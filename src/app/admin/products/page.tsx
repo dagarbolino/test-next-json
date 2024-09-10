@@ -45,7 +45,7 @@ async function ProductsTable() {
       name: true,
       priceInCents: true,
       isAvailableForPurchase: true,
-      _count: { select: { orders: true } },
+      
     },
     orderBy: { name: "asc" },
   })
@@ -110,14 +110,13 @@ async function ProductsTable() {
                   <DropdownMenuSeparator />
                   <DeleteDropdownItem
                     id={product.id}
-                    disabled={product._count.orders > 0}
+                    disabled={false}
                   />
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
+        ))}      </TableBody>
     </Table>
   )
 }
