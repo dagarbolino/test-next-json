@@ -18,6 +18,7 @@ export default function AdminLayout({
         <h1 className="flex justify-center items-center mx-auto">Page Admin</h1>
         <NavLink href="/admin">Dashboard</NavLink>
         <NavLink href="/admin/products">Products</NavLink>
+        <NavLink href="/admin/milkType">Milk Type</NavLink>
       </Nav>
       <div className="container my-6">{children}</div>
     </>

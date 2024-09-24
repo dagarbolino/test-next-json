@@ -44,7 +44,7 @@ type ProductGridSectionProps = {
 }
 
 function ProductGridSection({
-  productsFetcher,
+
   title,
 }: ProductGridSectionProps) {
   return (
@@ -68,19 +68,30 @@ function ProductGridSection({
             </>
           }
         >
-          <ProductSuspense productsFetcher={productsFetcher} />
+          <ProductsSuspense />
         </Suspense>
       </div>
     </div>
   )
 }
 
-async function ProductSuspense({
-  productsFetcher,
-}: {
-  productsFetcher: () => Promise<Product[]>
-}) {
-  return (await productsFetcher()).map(product => (
-    <ProductCard key={product.id} {...product} />
+
+const getProducts = cache(() => {
+  return db.product.findMany({
+    where: { isAvailableForPurchase: true },
+    orderBy: { name: "asc" },
+    include: { categoriesMilks: true },
+  })
+}, ["/products", "getProducts"])
+
+async function ProductsSuspense() {
+  const products = await getProducts()
+
+  return products.map(({ id, categoriesMilks, ...product }) => (
+    <ProductCard 
+      key={id} 
+      {...product} 
+      categoriesMilks={categoriesMilks?.name || ''} 
+    />
   ))
 }

@@ -7,8 +7,22 @@ const getProducts = cache(() => {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
+    include: { categoriesMilks: true },
   })
 }, ["/products", "getProducts"])
+
+async function ProductsSuspense() {
+  const products = await getProducts()
+
+  return products.map(({ id, categoriesMilks, ...product }) => (
+    <ProductCard 
+      key={id} 
+      {...product} 
+      categoriesMilks={categoriesMilks?.name || ''} 
+    />
+  ))
+}
+
 
 export default function ProductsPage() {
   return (
@@ -31,8 +45,5 @@ export default function ProductsPage() {
   )
 }
 
-async function ProductsSuspense() {
-  const products = await getProducts()
 
-  return products.map(product => <ProductCard key={product.id} {...product} />)
-}
+

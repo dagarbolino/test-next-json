@@ -4,21 +4,28 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatCurrency } from "@/lib/formatters"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { addProduct, updateProduct } from "../../_actions/products"
+import { getAllCategories } from "../../_actions/categories"
 import { useFormState, useFormStatus } from "react-dom"
-import { Product } from "@prisma/client"
+import { Product, CategoriesMilks } from "@prisma/client"
 import Image from "next/image"
 
 export function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(
     product == null ? addProduct : updateProduct.bind(null, product.id),
-    {}
+    {} as { [key: string]: string[] | undefined }
   )
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
     product?.priceInCents
   )
+  const [categories, setCategories] = useState<CategoriesMilks[]>([])
+
+  useEffect(() => {
+    getAllCategories().then(setCategories)
+  }, [])
 
   return (
     <form action={action} className="space-y-8">
@@ -33,6 +40,27 @@ export function ProductForm({ product }: { product?: Product | null }) {
         />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="categoriesMilksId">Catégorie de lait</Label>
+        <Select name="categoriesMilksId" defaultValue={product?.categoriesMilksId}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionnez une catégorie" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map(category => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {error.categoriesMilksId && (
+          <div className="text-destructive">{error.categoriesMilksId}</div>
+        )}
+      </div>
+
+      
       <div className="space-y-2">
         <Label htmlFor="priceInCents">Price In Cents</Label>
         <Input
@@ -86,9 +114,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
       <SubmitButton />
     </form>
   )
-}
-
-function SubmitButton() {
+}function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (

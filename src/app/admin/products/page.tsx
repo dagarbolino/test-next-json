@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button"
-import { PageHeader } from "../_components/PageHeader"
-import Link from "next/link"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   Table,
   TableBody,
@@ -10,15 +15,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import db from "@/db/db"
+import { formatCurrency } from "@/lib/formatters"
 import { CheckCircle2, MoreVertical, XCircle } from "lucide-react"
-import { formatCurrency, formatNumber } from "@/lib/formatters"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import Link from "next/link"
+import { PageHeader } from "../_components/PageHeader"
 import {
   ActiveToggleDropdownItem,
   DeleteDropdownItem,
@@ -40,14 +40,9 @@ export default function AdminProductsPage() {
 
 async function ProductsTable() {
   const products = await db.product.findMany({
-    select: {
-      id: true,
-      name: true,
-      priceInCents: true,
-      isAvailableForPurchase: true,
-      
-    },
-    orderBy: { name: "asc" },
+    include: {
+      categoriesMilks: true
+    }
   })
 
   if (products.length === 0) return <p>No products found</p>
@@ -60,8 +55,9 @@ async function ProductsTable() {
             <span className="sr-only">Available For Purchase</span>
           </TableHead>
           <TableHead>Name</TableHead>
+          <TableHead>Category</TableHead>
           <TableHead>Price</TableHead>
-          
+
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -84,8 +80,10 @@ async function ProductsTable() {
               )}
             </TableCell>
             <TableCell>{product.name}</TableCell>
+
+            <TableCell>{product.categoriesMilks.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
-            
+
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -116,7 +114,6 @@ async function ProductsTable() {
               </DropdownMenu>
             </TableCell>
           </TableRow>
-        ))}      </TableBody>
-    </Table>
+        ))}      </TableBody>    </Table>
   )
 }

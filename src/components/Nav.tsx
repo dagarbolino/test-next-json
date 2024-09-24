@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { ComponentProps, ReactNode, use } from "react"
 
 export function Nav({children}: {children: ReactNode}) {
-  return <nav className="flex justify-center px-4 bg-primary text-primary-foreground">{children}</nav>
+  return <nav className="flex justify-center px-4 bg-orange-500 text-primary-foreground">{children}</nav>
 
 }
 

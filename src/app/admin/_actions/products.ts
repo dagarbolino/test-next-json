@@ -17,6 +17,7 @@ const imageSchema = fileSchema.refine(
 
 const addSchema = z.object({
   name: z.string().min(1),
+  categoriesMilksId: z.string().min(1),
   description: z.string().min(1),
   priceInCents: z.coerce.number().int().min(1),
   file: fileSchema.refine(file => file.size > 0, "Required"),
@@ -50,6 +51,9 @@ export async function addProduct(prevState: unknown, formData: FormData) {
       priceInCents: data.priceInCents,
       filePath,
       imagePath,
+      categoriesMilks: {
+        connect: { id: data.categoriesMilksId }
+      }
     },
   })
 
@@ -104,6 +108,9 @@ export async function updateProduct(
       priceInCents: data.priceInCents,
       filePath,
       imagePath,
+      categoriesMilks: {
+        connect: { id: data.categoriesMilksId }
+      }
     },
   })
 
