@@ -17,6 +17,16 @@ model CategoriesMilks {
   updatedAt DateTime  @updatedAt
   products  Product[]
 }
+
+model CategoriesPasteCheese {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+
 model Product {
   id                     String                 @id @default(uuid())
   name                   String
@@ -29,6 +39,11 @@ model Product {
   updatedAt              DateTime               @updatedAt
 
   downloadVerifications  DownloadVerification[]
+
+
+  categoriesPasteCheeseId String
+  categoriesPasteCheese CategoriesPasteCheese @relation(fields: [categoriesPasteCheeseId], references: [id], onDelete: Cascade)
+  
   categoriesMilksId      String
   categoriesMilks        CategoriesMilks        @relation(fields: [categoriesMilksId], references: [id], onDelete: Cascade)
 }

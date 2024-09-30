@@ -3,15 +3,19 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { formatCurrency } from "@/lib/formatters"
-import { useState, useEffect } from "react"
-import { addProduct, updateProduct } from "../../_actions/products"
-import { getAllCategories } from "../../_actions/categories"
-import { useFormState, useFormStatus } from "react-dom"
-import { Product, CategoriesMilks } from "@prisma/client"
+
+
+import { CategoriesMilks, CategoriesPasteCheese, Product } from "@prisma/client"
 import Image from "next/image"
+import { useEffect, useState } from "react"
+import { useFormState, useFormStatus } from "react-dom"
+import { getAllCategories } from "../../_actions/categories"
+import { getAllCategoriesPasteCheese } from "../../_actions/categoriesPasteCheese"
+import { addProduct, updateProduct } from "../../_actions/products"
+
 
 export function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(
@@ -22,9 +26,14 @@ export function ProductForm({ product }: { product?: Product | null }) {
     product?.priceInCents
   )
   const [categories, setCategories] = useState<CategoriesMilks[]>([])
+  const [categoriesPasteCheese, setCategoriesPasteCheese] = useState<CategoriesPasteCheese[]>([])
 
   useEffect(() => {
     getAllCategories().then(setCategories)
+  }, [])
+
+  useEffect(() => {
+    getAllCategoriesPasteCheese().then(setCategoriesPasteCheese)
   }, [])
 
   return (
@@ -38,14 +47,13 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.name || ""}
         />
-        {error.name && <div className="text-destructive">{error.name}</div>}
+        {error?.name && <div className="text-destructive">{error.name}</div>}
       </div>
-
       <div className="space-y-2">
-        <Label htmlFor="categoriesMilksId">Catégorie de lait</Label>
+        <Label htmlFor="categoriesMilksId">Type de lait</Label>
         <Select name="categoriesMilksId" defaultValue={product?.categoriesMilksId}>
           <SelectTrigger>
-            <SelectValue placeholder="Sélectionnez une catégorie" />
+            <SelectValue placeholder="Sélectionnez un type de lait" />
           </SelectTrigger>
           <SelectContent>
             {categories.map(category => (
@@ -55,12 +63,30 @@ export function ProductForm({ product }: { product?: Product | null }) {
             ))}
           </SelectContent>
         </Select>
-        {error.categoriesMilksId && (
+        {error?.categoriesMilksId && (
           <div className="text-destructive">{error.categoriesMilksId}</div>
         )}
       </div>
 
-      
+      <div className="space-y-2">
+        <Label htmlFor="categoriesPasteCheeseId">Type de pâte</Label>
+        <Select name="categoriesPasteCheeseId" defaultValue={product?.categoriesPasteCheeseId}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionnez un type de pâte" />
+          </SelectTrigger>
+          <SelectContent>
+            {categoriesPasteCheese.map(categoryPasteCheese => (
+              <SelectItem key={categoryPasteCheese.id} value={categoryPasteCheese.id}>
+                {categoryPasteCheese.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {error?.categoriesPasteCheeseId && (
+          <div className="text-destructive">{error.categoriesPasteCheeseId}</div>
+        )}
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="priceInCents">Price In Cents</Label>
         <Input
@@ -74,7 +100,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
         <div className="text-muted-foreground">
           {formatCurrency((priceInCents || 0) / 100)}
         </div>
-        {error.priceInCents && (
+        {error?.priceInCents && (
           <div className="text-destructive">{error.priceInCents}</div>
         )}
       </div>
@@ -86,7 +112,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.description}
         />
-        {error.description && (
+        {error?.description && (
           <div className="text-destructive">{error.description}</div>
         )}
       </div>
@@ -96,7 +122,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
         {product != null && (
           <div className="text-muted-foreground">{product.filePath}</div>
         )}
-        {error.file && <div className="text-destructive">{error.file}</div>}
+        {error?.file && <div className="text-destructive">{error.file}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
@@ -109,13 +135,14 @@ export function ProductForm({ product }: { product?: Product | null }) {
             alt="Product Image"
           />
         )}
-        {error.image && <div className="text-destructive">{error.image}</div>}
+        {error?.image && <div className="text-destructive">{error.image}</div>}
       </div>
       <SubmitButton />
     </form>
   )
-}function SubmitButton() {
-  const { pending } = useFormStatus()
+}
+
+function SubmitButton() {  const { pending } = useFormStatus()
 
   return (
     <Button type="submit" disabled={pending}>

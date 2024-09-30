@@ -41,9 +41,11 @@ export default function AdminProductsPage() {
 async function ProductsTable() {
   const products = await db.product.findMany({
     include: {
-      categoriesMilks: true
+      categoriesMilks: true,
+      categoriesPasteCheese: true,
     }
   })
+  
 
   if (products.length === 0) return <p>No products found</p>
 
@@ -55,7 +57,8 @@ async function ProductsTable() {
             <span className="sr-only">Available For Purchase</span>
           </TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>Category</TableHead>
+          <TableHead>Type Milk</TableHead>
+          <TableHead>Type Paste</TableHead>
           <TableHead>Price</TableHead>
 
           <TableHead className="w-0">
@@ -82,6 +85,7 @@ async function ProductsTable() {
             <TableCell>{product.name}</TableCell>
 
             <TableCell>{product.categoriesMilks.name}</TableCell>
+            <TableCell>{product.categoriesPasteCheese.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
 
             <TableCell>
