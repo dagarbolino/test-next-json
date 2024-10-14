@@ -43,7 +43,7 @@ model Product {
 
   categoriesPasteCheeseId String
   categoriesPasteCheese CategoriesPasteCheese @relation(fields: [categoriesPasteCheeseId], references: [id], onDelete: Cascade)
-  
+
   categoriesMilksId      String
   categoriesMilks        CategoriesMilks        @relation(fields: [categoriesMilksId], references: [id], onDelete: Cascade)
 }

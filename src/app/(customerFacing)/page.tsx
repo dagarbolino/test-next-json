@@ -44,7 +44,7 @@ type ProductGridSectionProps = {
 }
 
 function ProductGridSection({
-
+  productsFetcher,
   title,
 }: ProductGridSectionProps) {
   return (
@@ -75,23 +75,42 @@ function ProductGridSection({
   )
 }
 
-
 const getProducts = cache(() => {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
-    include: { categoriesMilks: true },
+    include: { 
+      categoriesMilks: true
+    },
   })
 }, ["/products", "getProducts"])
 
-async function ProductsSuspense() {
-  const products = await getProducts()
+const getCategoriesPasteCheese = cache(() => {
+  return db.categoriesPasteCheese.findMany()
+}, ["/products", "getCategoriesPasteCheese"])
 
-  return products.map(({ id, categoriesMilks, ...product }) => (
-    <ProductCard 
-      key={id} 
-      {...product} 
-      categoriesMilks={categoriesMilks?.name || ''} 
-    />
-  ))
+async function ProductsSuspense() {
+  const [products, categoriesPasteCheese] = await Promise.all([
+    getProducts(),
+    getCategoriesPasteCheese()
+  ])
+  
+  const productsWithCategories = products.map(product => {
+    const pasteCheese = categoriesPasteCheese.find(cat => cat.id === product.categoriesPasteCheeseId)
+    return { ...product, categoriesPasteCheese: pasteCheese }
+  })
+
+  console.log("Produits avec catégories:", JSON.stringify(productsWithCategories, null, 2))
+
+  return productsWithCategories.map((product) => {
+    const { id, categoriesMilks, categoriesPasteCheese, ...restProduct } = product
+    return (
+      <ProductCard 
+        key={id} 
+        {...restProduct} 
+        categoriesMilks={categoriesMilks?.name || ''}
+        categoriesPasteCheese={categoriesPasteCheese?.name || ''}
+      />
+    )
+  })
 }

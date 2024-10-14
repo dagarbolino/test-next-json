@@ -13,6 +13,7 @@ import Image from "next/image"
 type ProductCardProps = {
   name: string
   categoriesMilks: string
+  categoriesPasteCheese: string
   priceInCents: number
   description: string
   imagePath: string
@@ -23,6 +24,7 @@ export function ProductCard({
 
   name,
   categoriesMilks,
+  categoriesPasteCheese,
   priceInCents,
   description,
   imagePath,
@@ -36,6 +38,7 @@ export function ProductCard({
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{categoriesMilks}</CardDescription>
+        <CardDescription>{categoriesPasteCheese}</CardDescription>
         <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -52,17 +55,16 @@ export function ProductCardSkeleton() {
       <div className="w-full aspect-video bg-gray-300" />
       <CardHeader>
         <CardTitle>
-          <div className="w-3/4 h-6 rounded-full bg-gray-300" />
+          <span className="block w-3/4 h-6 rounded-full bg-gray-300" />
         </CardTitle>
-        
         <CardDescription>
-          <div className="w-1/2 h-4 rounded-full bg-gray-300" />
+          <span className="block w-1/2 h-4 rounded-full bg-gray-300" />
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="w-full h-4 rounded-full bg-gray-300" />
-        <div className="w-full h-4 rounded-full bg-gray-300" />
-        <div className="w-3/4 h-4 rounded-full bg-gray-300" />
+        <span className="block w-full h-4 rounded-full bg-gray-300" />
+        <span className="block w-full h-4 rounded-full bg-gray-300" />
+        <span className="block w-3/4 h-4 rounded-full bg-gray-300" />
       </CardContent>
       <CardFooter>
         <Button className="w-full" disabled size="lg"></Button>
