@@ -45,7 +45,7 @@ async function ProductsTable() {
       categoriesPasteCheese: true,
     }
   })
-  
+
 
   if (products.length === 0) return <p>No products found</p>
 
@@ -92,7 +92,8 @@ async function ProductsTable() {
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
             <TableCell>{product.origin}</TableCell>
             <TableCell>{product.region}</TableCell>
-            <TableCell>{product.isPasteurizedMilk}</TableCell>
+            <TableCell>{product.isPasteurizedMilk ? 'cru' : 'pasteurisé'}</TableCell>
+
 
             <TableCell>
               <DropdownMenu>
@@ -124,6 +125,8 @@ async function ProductsTable() {
               </DropdownMenu>
             </TableCell>
           </TableRow>
-        ))}      </TableBody>    </Table>
+        ))}
+      </TableBody>
+    </Table>
   )
 }

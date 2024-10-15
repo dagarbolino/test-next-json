@@ -113,7 +113,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="isPasteurizedMilk">Lait pasterisé</Label>
+        <Label htmlFor="isPasteurizedMilk">Lait cru</Label>
         <CheckboxPasterizedMilk
           id="isPasteurizedMilk"
           name="isPasteurizedMilk"

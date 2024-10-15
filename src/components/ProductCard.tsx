@@ -1,5 +1,8 @@
+"use client"
+
 import { formatCurrency } from "@/lib/formatters"
 import Image from "next/image"
+import { useState } from 'react'
 import { Button } from "./ui/button"
 import {
   Card,
@@ -24,7 +27,6 @@ type ProductCardProps = {
 
 
 export function ProductCard({
-
   name,
   categoriesMilks,
   categoriesPasteCheese,
@@ -35,29 +37,52 @@ export function ProductCard({
   description,
   imagePath,
 }: ProductCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Card className="flex overflow-hidden flex-col">
-      <div className="relative w-48 h-full aspect-video">
-        <Image className="" src={imagePath} fill alt={name} />
-      </div>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <CardDescription>{categoriesMilks}</CardDescription>
-        <CardDescription>{categoriesPasteCheese}</CardDescription>
-        <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
-          <CardDescription>Pays: {origin}</CardDescription>
-          <CardDescription>Département: {region}</CardDescription>
-          <CardDescription> {isPasteurizedMilk ? 'Lait pasterisé' : 'Lait cru'}</CardDescription>
+    <Card className="flex overflow-hidden flex-col relative">
+      <Card className="absolute top-2 left-2 w-14 h-14 overflow-hidden group z-10 transition-all duration-300 ease-in-out hover:w-48 hover:h-48">
+        <Image
+          className="w-full h-full object-cover"
+          src={imagePath}
+          width={192}
+          height={192}
+          alt={name}
+        />
+      </Card>
+
+      <CardHeader className="pt-20">
+        <div className="flex flex-row justify-between">
+          <CardTitle>{name}</CardTitle>
+          <CardContent>{formatCurrency(priceInCents / 100)}</CardContent>
+        </div>
+        <CardContent>
+          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait pasterisé' : 'lait cru'},</CardDescription>
+          <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
+
+          <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>
+          <CardDescription>dans le département: {region}.</CardDescription>
+        </CardContent>
+
+
+
       </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="line-clamp-4">{description}</p>
+
+      <CardDescription className="text-md underline ml-5 font-bold">Description:</CardDescription>
+      <CardContent>
+        <CardDescription className={`${isExpanded ? '' : 'line-clamp-2'}`}>{description}</CardDescription>
+        <Button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-blue-500 hover:underline mt-2"
+        >
+          {isExpanded ? 'Voir moins' : 'Voir plus'}
+        </Button>
       </CardContent>
 
     </Card>
+
   )
 }
-
 export function ProductCardSkeleton() {
   return (
     <Card className="overflow-hidden flex flex-col animate-pulse">
