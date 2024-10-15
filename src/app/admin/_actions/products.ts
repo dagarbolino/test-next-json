@@ -1,10 +1,10 @@
 "use server"
 
 import db from "@/db/db"
-import { z } from "zod"
 import fs from "fs/promises"
-import { notFound, redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { notFound, redirect } from "next/navigation"
+import { z } from "zod"
 
 const fileSchema = typeof File !== 'undefined' 
   ? z.instanceof(File, { message: "Required" })
@@ -21,6 +21,13 @@ const addSchema = z.object({
   categoriesPasteCheeseId: z.string().min(1, "Required"),
   description: z.string().min(1),
   priceInCents: z.coerce.number().int().min(1),
+  origin: z.string().min(1),
+  region: z.string().min(1),
+  isPasteurizedMilk: z.preprocess(
+    (val) => val === 'true' || val === true,
+    z.boolean()
+  ),
+  
   file: fileSchema.refine(file => file.size > 0, "Required"),
   image: imageSchema.refine(file => file.size > 0, "Required"),
 })
@@ -60,6 +67,9 @@ export async function addProduct(prevState: unknown, formData: FormData) {
         name: data.name,
         description: data.description,
         priceInCents: data.priceInCents,
+        origin: data.origin,
+        region: data.region,
+        isPasteurizedMilk: data.isPasteurizedMilk,
         filePath,
         imagePath,
         categoriesMilks: {
@@ -125,6 +135,9 @@ export async function updateProduct(
       name: data.name,
       description: data.description,
       priceInCents: data.priceInCents,
+      origin: data.origin,
+      region: data.region,
+      isPasteurizedMilk: data.isPasteurizedMilk,
       filePath,
       imagePath,
       categoriesMilks: {

@@ -60,6 +60,9 @@ async function ProductsTable() {
           <TableHead>Type Milk</TableHead>
           <TableHead>Type Paste</TableHead>
           <TableHead>Price</TableHead>
+          <TableHead>Origine</TableHead>
+          <TableHead>Région</TableHead>
+          <TableHead>Lait</TableHead>
 
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
@@ -87,6 +90,9 @@ async function ProductsTable() {
             <TableCell>{product.categoriesMilks.name}</TableCell>
             <TableCell>{product.categoriesPasteCheese.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
+            <TableCell>{product.origin}</TableCell>
+            <TableCell>{product.region}</TableCell>
+            <TableCell>{product.isPasteurizedMilk}</TableCell>
 
             <TableCell>
               <DropdownMenu>

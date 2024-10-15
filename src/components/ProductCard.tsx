@@ -1,4 +1,6 @@
 import { formatCurrency } from "@/lib/formatters"
+import Image from "next/image"
+import { Button } from "./ui/button"
 import {
   Card,
   CardContent,
@@ -7,14 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card"
-import { Button } from "./ui/button"
-import Image from "next/image"
 
 type ProductCardProps = {
   name: string
   categoriesMilks: string
   categoriesPasteCheese: string
   priceInCents: number
+  origin: string
+  region: string
+  isPasteurizedMilk: boolean
   description: string
   imagePath: string
 }
@@ -26,10 +29,13 @@ export function ProductCard({
   categoriesMilks,
   categoriesPasteCheese,
   priceInCents,
+  origin,
+  region,
+  isPasteurizedMilk,
   description,
   imagePath,
 }: ProductCardProps) {
-  
+
   return (
     <Card className="flex overflow-hidden flex-col">
       <div className="relative w-48 h-full aspect-video">
@@ -40,6 +46,9 @@ export function ProductCard({
         <CardDescription>{categoriesMilks}</CardDescription>
         <CardDescription>{categoriesPasteCheese}</CardDescription>
         <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
+          <CardDescription>Pays: {origin}</CardDescription>
+          <CardDescription>Département: {region}</CardDescription>
+          <CardDescription> {isPasteurizedMilk ? 'Lait pasterisé' : 'Lait cru'}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>

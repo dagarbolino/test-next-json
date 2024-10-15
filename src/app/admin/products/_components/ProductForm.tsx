@@ -1,5 +1,6 @@
 "use client"
 
+import { CheckboxPasterizedMilk } from "@/components/ui/checkboxPasterizedMilk"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -88,6 +89,40 @@ export function ProductForm({ product }: { product?: Product | null }) {
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="name">Origine</Label>
+        <Input
+          type="text"
+          id="origin"
+          name="origin"
+          required
+          defaultValue={product?.origin || ""}
+        />
+        {error?.origin && <div className="text-destructive">{error.origin}</div>}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="name">Région</Label>
+        <Input
+          type="text"
+          id="region"
+          name="region"
+          required
+          defaultValue={product?.region || ""}
+        />
+        {error?.region && <div className="text-destructive">{error.region}</div>}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="isPasteurizedMilk">Lait pasterisé</Label>
+        <CheckboxPasterizedMilk
+          id="isPasteurizedMilk"
+          name="isPasteurizedMilk"
+          defaultChecked={product?.isPasteurizedMilk}
+        />
+        {error?.isPasteurizedMilk && <div className="text-destructive">{error.isPasteurizedMilk}</div>}
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="priceInCents">Price In Cents</Label>
         <Input
           type="number"
@@ -140,9 +175,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
       <SubmitButton />
     </form>
   )
-}
-
-function SubmitButton() {  const { pending } = useFormStatus()
+}function SubmitButton() {  const { pending } = useFormStatus()
 
   return (
     <Button type="submit" disabled={pending}>
