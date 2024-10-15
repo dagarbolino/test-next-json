@@ -18,15 +18,15 @@ import db from "@/db/db"
 import { MoreVertical } from "lucide-react"
 import Link from "next/link"
 import { PageHeader } from "../_components/PageHeader"
-import { DeleteDropdownItem } from "./_components/CategoryActionsPasteCheese"
+import { DeleteDropdownItem } from "./_components/CategoryActions"
 
-export default function AdminPasteCheesesPage() {
+export default function AdminCategoriesPage() {
   return (
     <>
       <div className="flex justify-between items-center gap-4">
-        <PageHeader>Paste Cheese</PageHeader>
+        <PageHeader>Unit type</PageHeader>
         <Button asChild>
-          <Link href="/admin/pasteCheese/new">Add Paste Cheese</Link>
+          <Link href="/admin/unitType/new">Add Unit Type</Link>
         </Button>
       </div>
       <CategoriesTable />
@@ -35,7 +35,7 @@ export default function AdminPasteCheesesPage() {
 }
 
 async function CategoriesTable() {
-  const categories = await db.categoriesPasteCheese.findMany({
+  const categoriesUnitType = await db.unitType.findMany({
     select: {
       id: true,
       name: true,
@@ -43,13 +43,15 @@ async function CategoriesTable() {
 
   })
 
-  if (categories.length === 0) return <p>No paste cheese found</p>
+  if (categoriesUnitType.length === 0) return <p>No unit type found</p>
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
+
           <TableHead>Name</TableHead>
+
 
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
@@ -57,10 +59,10 @@ async function CategoriesTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {categories.map(categories => (
-          <TableRow key={categories.id}>
+        {categoriesUnitType.map(categoriesUnitTypes => (
+          <TableRow key={categoriesUnitType.id}>
 
-            <TableCell>{categories.name}</TableCell>
+            <TableCell>{categoriesUnitType.name}</TableCell>
 
             <TableCell>
               <DropdownMenu>
@@ -71,14 +73,14 @@ async function CategoriesTable() {
                 <DropdownMenuContent>
 
                   <DropdownMenuItem asChild>
-                    <Link href={`/admin/pasteCheese/${categories.id}/edit`}>
+                    <Link href={`/admin/unitType/${categoriesUnitType.id}/edit`}>
                       Edit
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   
                   <DeleteDropdownItem
-                    id={categories.id}
+                    id={categoriesUnitType.id}
                     disabled={false}
                   />
 

@@ -61,7 +61,7 @@ export function ProductCard({
           <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
 
           <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>
-          <CardDescription>dans le département: {region}.</CardDescription>
+          <CardDescription>dans le département {region}.</CardDescription>
         </CardContent>
 
 

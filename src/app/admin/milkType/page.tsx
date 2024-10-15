@@ -49,9 +49,7 @@ async function CategoriesTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-0">
-            <span className="sr-only">Available For Purchase</span>
-          </TableHead>
+
           <TableHead>Name</TableHead>
 
 

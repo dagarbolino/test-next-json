@@ -20,6 +20,7 @@ export default function AdminLayout({
         <NavLink href="/admin/products">Products</NavLink>
         <NavLink href="/admin/milkType">Milk Type</NavLink>
         <NavLink href="/admin/pasteCheese">Paste Cheese</NavLink>
+        <NavLink href="/admin/unitType">Unit Type</NavLink>
       </Nav>
       <div className="container my-6">{children}</div>
     </>
