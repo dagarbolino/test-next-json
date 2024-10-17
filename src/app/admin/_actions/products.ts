@@ -25,9 +25,10 @@ const addSchema = z.object({
   origin: z.string().min(1),
   region: z.string().min(1),
   isPasteurizedMilk: z.preprocess(
-    (val) => val === 'true' || val === true,
+    (val) => val === 'true' || val === true || val === 'on',
     z.boolean()
   ),
+  
   
   file: fileSchema.refine(file => file.size > 0, "Required"),
   image: imageSchema.refine(file => file.size > 0, "Required"),

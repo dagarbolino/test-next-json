@@ -127,7 +127,12 @@ export function ProductForm({ product }: { product?: Product | null }) {
           id="isPasteurizedMilk"
           name="isPasteurizedMilk"
           defaultChecked={product?.isPasteurizedMilk}
+          onCheckedChange={(checked) => {
+
+            console.log(checked)
+          }}
         />
+
         {error?.isPasteurizedMilk && <div className="text-destructive">{error.isPasteurizedMilk}</div>}
       </div>
 
@@ -150,7 +155,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="unitTypeId">Type d'unité</Label>
+        <Label htmlFor="unitTypeId">Type d unité</Label>
         <Select name="unitTypeId" defaultValue={product?.unitTypeId}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un type d'unité" />

@@ -59,7 +59,7 @@ export function ProductCard({
           <CardContent>{formatCurrency(priceInCents / 100)} {unitType}</CardContent>
         </div>
         <CardContent>
-          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait pasterisé' : 'lait cru'},</CardDescription>
+          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait cru' : 'lait pasterisé' },</CardDescription>
           <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
 
           <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>

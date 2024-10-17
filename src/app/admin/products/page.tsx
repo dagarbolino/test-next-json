@@ -133,3 +133,4 @@ async function ProductsTable() {
     </Table>
   )
 }
+
