@@ -43,6 +43,7 @@ async function ProductsTable() {
     include: {
       categoriesMilks: true,
       categoriesPasteCheese: true,
+      unitType: true,
     }
   })
 
@@ -63,6 +64,7 @@ async function ProductsTable() {
           <TableHead>Origine</TableHead>
           <TableHead>Région</TableHead>
           <TableHead>Lait</TableHead>
+          <TableHead>Unité</TableHead>
 
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
@@ -93,6 +95,7 @@ async function ProductsTable() {
             <TableCell>{product.origin}</TableCell>
             <TableCell>{product.region}</TableCell>
             <TableCell>{product.isPasteurizedMilk ? 'cru' : 'pasteurisé'}</TableCell>
+            <TableCell>{product.unitType.name}</TableCell>
 
 
             <TableCell>

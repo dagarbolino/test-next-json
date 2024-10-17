@@ -18,6 +18,7 @@ type ProductCardProps = {
   categoriesMilks: string
   categoriesPasteCheese: string
   priceInCents: number
+  unitType: string
   origin: string
   region: string
   isPasteurizedMilk: boolean
@@ -31,6 +32,7 @@ export function ProductCard({
   categoriesMilks,
   categoriesPasteCheese,
   priceInCents,
+  unitType,
   origin,
   region,
   isPasteurizedMilk,
@@ -54,7 +56,7 @@ export function ProductCard({
       <CardHeader className="pt-20">
         <div className="flex flex-row justify-between">
           <CardTitle>{name}</CardTitle>
-          <CardContent>{formatCurrency(priceInCents / 100)}</CardContent>
+          <CardContent>{formatCurrency(priceInCents / 100)} {unitType}</CardContent>
         </div>
         <CardContent>
           <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait pasterisé' : 'lait cru'},</CardDescription>

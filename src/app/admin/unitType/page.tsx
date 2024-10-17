@@ -59,10 +59,10 @@ async function CategoriesTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {categoriesUnitType.map(categoriesUnitTypes => (
-          <TableRow key={categoriesUnitType.id}>
+        {categoriesUnitType.map(category => (
+          <TableRow key={category.id}>
 
-            <TableCell>{categoriesUnitType.name}</TableCell>
+            <TableCell>{category.name}</TableCell>
 
             <TableCell>
               <DropdownMenu>
@@ -73,14 +73,14 @@ async function CategoriesTable() {
                 <DropdownMenuContent>
 
                   <DropdownMenuItem asChild>
-                    <Link href={`/admin/unitType/${categoriesUnitType.id}/edit`}>
+                    <Link href={`/admin/unitType/${category.id}/edit`}>
                       Edit
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   
                   <DeleteDropdownItem
-                    id={categoriesUnitType.id}
+                    id={category.id}
                     disabled={false}
                   />
 

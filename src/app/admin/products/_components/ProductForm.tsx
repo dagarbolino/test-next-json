@@ -1,21 +1,23 @@
 "use client"
 
-import { CheckboxPasterizedMilk } from "@/components/ui/checkboxPasterizedMilk"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+
+
 import { formatCurrency } from "@/lib/formatters"
-
-
-import { CategoriesMilks, CategoriesPasteCheese, Product } from "@prisma/client"
+import { CategoriesMilks, CategoriesPasteCheese, Product, UnitType } from "@prisma/client"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { getAllCategories } from "../../_actions/categories"
 import { getAllCategoriesPasteCheese } from "../../_actions/categoriesPasteCheese"
+import { getAllCategoriesUnitType } from "../../_actions/categoriesUnitType"
 import { addProduct, updateProduct } from "../../_actions/products"
+
+import { Button } from "@/components/ui/button"
+import { CheckboxPasterizedMilk } from "@/components/ui/checkboxPasterizedMilk"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 
 
 export function ProductForm({ product }: { product?: Product | null }) {
@@ -28,6 +30,8 @@ export function ProductForm({ product }: { product?: Product | null }) {
   )
   const [categories, setCategories] = useState<CategoriesMilks[]>([])
   const [categoriesPasteCheese, setCategoriesPasteCheese] = useState<CategoriesPasteCheese[]>([])
+  const [categoriesunitType, setCategoriesUnitType] = useState<UnitType[]>([])
+
 
   useEffect(() => {
     getAllCategories().then(setCategories)
@@ -35,6 +39,10 @@ export function ProductForm({ product }: { product?: Product | null }) {
 
   useEffect(() => {
     getAllCategoriesPasteCheese().then(setCategoriesPasteCheese)
+  }, [])
+
+  useEffect(() => {
+    getAllCategoriesUnitType().then(setCategoriesUnitType)
   }, [])
 
   return (
@@ -75,6 +83,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un type de pâte" />
           </SelectTrigger>
+
           <SelectContent>
             {categoriesPasteCheese.map(categoryPasteCheese => (
               <SelectItem key={categoryPasteCheese.id} value={categoryPasteCheese.id}>
@@ -139,6 +148,29 @@ export function ProductForm({ product }: { product?: Product | null }) {
           <div className="text-destructive">{error.priceInCents}</div>
         )}
       </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="unitTypeId">Type d'unité</Label>
+        <Select name="unitTypeId" defaultValue={product?.unitTypeId}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionnez un type d'unité" />
+          </SelectTrigger>
+
+          <SelectContent>
+            {categoriesunitType.map((unitType) => (
+              <SelectItem key={unitType.id} value={unitType.id}>
+                {unitType.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+
+        </Select>
+        {error?.unitTypeId && (
+          <div className="text-destructive">{error.unitTypeId}</div>
+        )}
+      </div>
+
+
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
@@ -175,8 +207,8 @@ export function ProductForm({ product }: { product?: Product | null }) {
       <SubmitButton />
     </form>
   )
-}function SubmitButton() {  const { pending } = useFormStatus()
-
+} function SubmitButton() {
+  const { pending } = useFormStatus()
   return (
     <Button type="submit" disabled={pending}>
       {pending ? "Saving..." : "Save"}

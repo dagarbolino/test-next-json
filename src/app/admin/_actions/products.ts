@@ -19,6 +19,7 @@ const addSchema = z.object({
   name: z.string().min(1),
   categoriesMilksId: z.string().min(1, "Required"),
   categoriesPasteCheeseId: z.string().min(1, "Required"),
+  unitTypeId: z.string().min(1, "Required"),
   description: z.string().min(1),
   priceInCents: z.coerce.number().int().min(1),
   origin: z.string().min(1),
@@ -69,6 +70,9 @@ export async function addProduct(prevState: unknown, formData: FormData) {
         priceInCents: data.priceInCents,
         origin: data.origin,
         region: data.region,
+        unitType: {
+          connect: { id: data.unitTypeId }
+        },
         isPasteurizedMilk: data.isPasteurizedMilk,
         filePath,
         imagePath,
@@ -91,9 +95,8 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     console.error("Erreur lors de la création du produit:", error)
     throw error
   }
-}
-const editSchema = addSchema.extend({
-  file: fileSchema.optional(),
+
+}const editSchema = addSchema.extend({  file: fileSchema.optional(),
   image: imageSchema.optional(),
 })
 
@@ -137,6 +140,9 @@ export async function updateProduct(
       priceInCents: data.priceInCents,
       origin: data.origin,
       region: data.region,
+      unitType: {
+        connect: { id: data.unitTypeId }
+      },
       isPasteurizedMilk: data.isPasteurizedMilk,
       filePath,
       imagePath,
@@ -154,7 +160,6 @@ export async function updateProduct(
 
   redirect("/admin/products")
 }
-
 export async function toggleProductAvailability(
   id: string,
   isAvailableForPurchase: boolean
