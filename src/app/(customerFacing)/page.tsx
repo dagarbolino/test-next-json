@@ -1,6 +1,6 @@
 
-
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
+import ProductsFilterMilks from "@/components/ProductsFilterMilks"
 import { Button } from "@/components/ui/button"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
@@ -33,7 +33,10 @@ const getNewestProducts = cache(() => {
 export default function HomePage() {
   return (
     <main className="space-y-12">
-      <ProductGridSection title="Most Popular" productsFetcher={getMostPopularProducts}/>
+
+      <div className="flex justify-center"><ProductsFilterMilks /></div>
+
+      <ProductGridSection title="Most Popular" productsFetcher={getMostPopularProducts} />
       <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
     </main>
   )
@@ -66,7 +69,7 @@ function ProductGridSection({
               <ProductCardSkeleton />
               <ProductCardSkeleton />
               <ProductCardSkeleton />
-              
+
             </>
           }
         >
@@ -81,7 +84,7 @@ const getProducts = cache(() => {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
-    include: { 
+    include: {
       categoriesMilks: true
     },
   })
@@ -93,7 +96,7 @@ const getCategoriesPasteCheese = cache(() => {
 
 const getCategoriesUnitType = cache(() => {
   return db.unitType.findMany()
-} , ["/products", "getCategoriesUnitType"])
+}, ["/products", "getCategoriesUnitType"])
 
 async function ProductsSuspense() {
   const [products, categoriesPasteCheese, categoriesUnitType] = await Promise.all([
@@ -101,7 +104,7 @@ async function ProductsSuspense() {
     getCategoriesPasteCheese(),
     getCategoriesUnitType()
   ])
-  
+
   const productsWithCategories = products.map(product => {
     const pasteCheese = categoriesPasteCheese.find(cat => cat.id === product.categoriesPasteCheeseId)
     const unitType = categoriesUnitType.find(unit => unit.id === product.unitTypeId)
@@ -113,12 +116,12 @@ async function ProductsSuspense() {
   return productsWithCategories.map((product) => {
     const { id, categoriesMilks, categoriesPasteCheese, categoriesUnitType, ...restProduct } = product
     return (
-      <ProductCard 
-        key={id} 
-        {...restProduct} 
+      <ProductCard
+        key={id}
+        {...restProduct}
         categoriesMilks={categoriesMilks?.name || ''}
         categoriesPasteCheese={categoriesPasteCheese?.name || ''}
-        unitType={categoriesUnitType?.name || ''} 
+        unitType={categoriesUnitType?.name || ''}
       />
     )
   })

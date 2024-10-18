@@ -2,7 +2,7 @@
 
 import { formatCurrency } from "@/lib/formatters"
 import Image from "next/image"
-import { useState } from 'react'
+import Link from "next/link"
 import { Button } from "./ui/button"
 import {
   Card,
@@ -39,7 +39,6 @@ export function ProductCard({
   description,
   imagePath,
 }: ProductCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <Card className="flex overflow-hidden flex-col relative">
@@ -59,33 +58,30 @@ export function ProductCard({
           <CardContent>{formatCurrency(priceInCents / 100)} {unitType}</CardContent>
         </div>
         <CardContent>
-          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait cru' : 'lait pasterisé' },</CardDescription>
+          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait cru' : 'lait pasterisé'},</CardDescription>
           <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
 
           <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>
           <CardDescription>dans le département {region}.</CardDescription>
         </CardContent>
 
-
-
       </CardHeader>
 
       <CardDescription className="text-md underline ml-5 font-bold">Description:</CardDescription>
       <CardContent>
-        <CardDescription className={`${isExpanded ? '' : 'line-clamp-2'}`}>{description}</CardDescription>
-        <Button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-blue-500 hover:underline mt-2"
-        >
-          {isExpanded ? 'Voir moins' : 'Voir plus'}
-        </Button>
+        <CardDescription className="line-clamp-2">{description}</CardDescription>
       </CardContent>
+
+      <CardFooter className="mt-auto flex flex-col">
+        <Button className="w-full" size="sm" asChild>
+          <Link href={`/products/${name}`}>Détails</Link>
+        </Button>
+      </CardFooter>
 
     </Card>
 
   )
-}
-export function ProductCardSkeleton() {
+} export function ProductCardSkeleton() {
   return (
     <Card className="overflow-hidden flex flex-col animate-pulse">
       <div className="w-full aspect-video bg-gray-300" />
