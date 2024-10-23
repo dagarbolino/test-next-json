@@ -1,6 +1,7 @@
 
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import ProductsFilterMilks from "@/components/ProductsFilterMilks"
+import ProductsFilterPasteCheese from "@/components/ProductsFilterPaste"
 import { Button } from "@/components/ui/button"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
@@ -32,10 +33,11 @@ const getNewestProducts = cache(() => {
 
 export default function HomePage() {
   return (
-    <main className="space-y-12">
-
-      <div className="flex justify-center"><ProductsFilterMilks /></div>
-
+    <main className="space-y-12 ">
+      <div className="h-18 flex flex-row justify-end items-end gap-2">
+        <div className="flex justify-center"><ProductsFilterMilks /></div>
+        <div className="flex justify-center"><ProductsFilterPasteCheese /></div>
+      </div>
       <ProductGridSection title="Most Popular" productsFetcher={getMostPopularProducts} />
       <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
     </main>

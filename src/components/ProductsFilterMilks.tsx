@@ -1,31 +1,48 @@
-
-
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import db from "@/db/db";
+import { cache } from "@/lib/cache";
+import { cn } from "@/lib/utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import Link from "next/link";
+import { Suspense } from "react";
 import { Button } from "./ui/button";
 
 
+const getProductsFilterMilks = cache(() => {
+  return db.categoriesMilks.findMany()
+}, ["/", "getProductsFilterMilks"])
 
-  
-  export default function ProductsFilterMilks() {
-    return (
-      <div className="flex justify-center">
+export default function ProductsFilterMilks() {
+  return (
+    <div className="flex justify-center">
       <Button variant="outline" asChild>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="border-2 rounded-md p-2">Types de lait</DropdownMenuTrigger>
-        <DropdownMenuContent>
-
-          <DropdownMenuItem>Lait de vache</DropdownMenuItem>
-          <DropdownMenuItem>Lait de chèvre</DropdownMenuItem>
-          <DropdownMenuItem>Lait de brebis</DropdownMenuItem>
-
-
-        </DropdownMenuContent>
-      </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="border-2 rounded-md p-2">Types de lait</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <Suspense fallback={<DropdownMenuItem>Chargement...</DropdownMenuItem>}>
+              <MilkTypesList />
+            </Suspense>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </Button>
     </div>
   )
 }
 
+async function MilkTypesList() {
+  const milkTypes = await getProductsFilterMilks()
+  return (
+    <div className="flex flex-row  gap-2">
+      {milkTypes.map((milkType) => (
+        <DropdownMenuItem key={milkType.name} asChild className={cn("w-full")}>
+          <Link href={`/products/${encodeURIComponent(milkType.name)}`} className="w-40 mt-4 text-left underline">
+            {milkType.name}
+          </Link>
+
+        </DropdownMenuItem>
+      ))}
+    </div>
+  )
+}
 
 
 
