@@ -56,14 +56,10 @@ async function ProductsSuspense() {
 }
 export default function ProductsPage() {
   return (
-    <main className="space-y-12 ">
-      <div className="h-18 flex flex-row justify-end items-center gap-2">
-      <h2 className="">Filtrer par:</h2>
-        <div className="flex justify-center"><ProductsFilterMilks /></div>
-        <div className="flex justify-center"><ProductsFilterPasteCheese /></div>
-      </div>
+    <>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
         <Suspense
           fallback={
             <>
@@ -80,6 +76,6 @@ export default function ProductsPage() {
         </Suspense>
       </div>
 
-      </main>
+    </>
   )
 }

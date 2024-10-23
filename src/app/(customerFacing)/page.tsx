@@ -34,7 +34,8 @@ const getNewestProducts = cache(() => {
 export default function HomePage() {
   return (
     <main className="space-y-12 ">
-      <div className="h-18 flex flex-row justify-end items-end gap-2">
+      <div className="h-18 flex flex-row justify-end items-center gap-2">
+        <h2 className="">Filtrer par:</h2>
         <div className="flex justify-center"><ProductsFilterMilks /></div>
         <div className="flex justify-center"><ProductsFilterPasteCheese /></div>
       </div>

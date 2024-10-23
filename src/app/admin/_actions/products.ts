@@ -89,6 +89,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     console.log("Revalidation des chemins")
     revalidatePath("/")
     revalidatePath("/products")
+    revalidatePath("/milks")
 
     console.log("Produit créé avec succès, redirection vers /admin/products")
     return redirect("/admin/products")
@@ -158,6 +159,7 @@ export async function updateProduct(
 
   revalidatePath("/")
   revalidatePath("/products")
+  revalidatePath("/milks")
 
   redirect("/admin/products")
 }
@@ -169,6 +171,7 @@ export async function toggleProductAvailability(
 
   revalidatePath("/")
   revalidatePath("/products")
+  revalidatePath("/milks")
 }
 
 export async function deleteProduct(id: string) {
@@ -181,4 +184,6 @@ export async function deleteProduct(id: string) {
 
   revalidatePath("/")
   revalidatePath("/products")
+  revalidatePath("/milks")
 }
+  
