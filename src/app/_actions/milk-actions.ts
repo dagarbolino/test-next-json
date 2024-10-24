@@ -1,7 +1,13 @@
+// src/app/_actions/milk-actions.ts
 "use server"
-
+ 
 import db from "@/db/db"
-
-export async function getMilkTypes() {
-  return await db.categoriesMilks.findMany()
-}
+import { cache } from "@/lib/cache"
+ 
+export const getMilkTypes = cache(
+  async () => {
+    return await db.categoriesMilks.findMany()
+  },
+  ["milkTypes"],
+  { revalidate: 1 }
+)

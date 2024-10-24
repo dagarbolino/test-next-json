@@ -10,8 +10,7 @@ export default function ProductsFilterMilks() {
   const [milkTypes, setMilkTypes] = useState<{ id: string; name: string; createdAt: Date; updatedAt: Date; }[]>([])
 
   useEffect(() => {
-
-    getMilkTypes().then((types) => setMilkTypes(types))
+    getMilkTypes().then(setMilkTypes)
   }, [])
 
   return (
@@ -32,7 +31,7 @@ export default function ProductsFilterMilks() {
           />
           <div className="absolute top-full mt-2 bg-white rounded-md shadow-lg z-50 min-w-[200px]">
             <nav className="flex flex-col p-2">
-              {milkTypes.map((type: { id: string | number, name: string }) => (
+              {milkTypes.map((type) => (
                 <Link 
                   key={type.id}
                   href={`/milks/${encodeURIComponent(type.name)}`}
