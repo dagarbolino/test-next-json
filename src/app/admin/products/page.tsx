@@ -1,3 +1,5 @@
+"use sever"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,

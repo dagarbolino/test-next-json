@@ -3,8 +3,6 @@ import db from "@/db/db"
 import { cache } from "@/lib/cache"
 import { Suspense } from "react"
 
-import ProductsFilterMilks from "@/components/ProductsFilterMilks"
-import ProductsFilterPasteCheese from "@/components/ProductsFilterPaste"
 
 const getProducts = cache(() => {
   return db.product.findMany({
