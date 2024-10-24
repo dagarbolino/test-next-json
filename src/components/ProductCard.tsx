@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from "./ui/card"
 
+import { ErrorBoundary } from 'react-error-boundary'
+
 type ProductCardProps = {
   name: string
   categoriesMilks: string
@@ -27,6 +29,9 @@ type ProductCardProps = {
 }
 
 
+
+
+
 export function ProductCard({
   name,
   categoriesMilks,
@@ -39,49 +44,50 @@ export function ProductCard({
   description,
   imagePath,
 }: ProductCardProps) {
-
   return (
-    <Card className="flex overflow-hidden flex-col relative">
-      <Card className="absolute top-2 left-2 w-14 h-14 overflow-hidden group z-10 transition-all duration-300 ease-in-out hover:w-48 hover:h-48">
-        <Image
-          className="w-full h-full object-cover"
-          src={imagePath}
-          width={192}
-          height={192}
-          alt={name}
-        />
-      </Card>
+    <ErrorBoundary fallback={<div>Une erreur est survenue</div>}>
+      <Card className="flex overflow-hidden flex-col relative">
+        <Card className="absolute top-2 left-2 w-14 h-14 overflow-hidden group z-10 transition-all duration-300 ease-in-out hover:w-48 hover:h-48">
+          <Image
+            className="w-full h-full object-cover"
+            src={imagePath}
+            width={192}
+            height={192}
+            alt={name}
+          />
+        </Card>
 
-      <CardHeader className="pt-20">
-        <div className="flex flex-row justify-between">
-          <CardTitle>{name}</CardTitle>
-          <CardContent>{formatCurrency(priceInCents / 100)} {unitType}</CardContent>
-        </div>
+        <CardHeader className="pt-20">
+          <div className="flex flex-row justify-between">
+            <CardTitle>{name}</CardTitle>
+            <CardContent>{formatCurrency(priceInCents / 100)} {unitType}</CardContent>
+          </div>
+          <CardContent>
+            <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait cru' : 'lait pasterisé'},</CardDescription>
+            <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
+
+            <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>
+            <CardDescription>dans le département {region}.</CardDescription>
+          </CardContent>
+
+        </CardHeader>
+
+        <CardDescription className="text-md underline ml-5 font-bold">Description:</CardDescription>
         <CardContent>
-          <CardDescription>Fromage au {categoriesMilks} et au {isPasteurizedMilk ? 'lait cru' : 'lait pasterisé'},</CardDescription>
-          <CardDescription>avec une {categoriesPasteCheese}.</CardDescription>
-
-          <CardDescription>Ce fromage est fabriqué en {origin},</CardDescription>
-          <CardDescription>dans le département {region}.</CardDescription>
+          <CardDescription className="line-clamp-2">{description}</CardDescription>
         </CardContent>
 
-      </CardHeader>
+        <CardFooter className="mt-auto flex flex-col">
+          <Button className="w-full" size="sm" asChild>
+            <Link href={`/products/${name}`}>Détails</Link>
+          </Button>
+        </CardFooter>
 
-      <CardDescription className="text-md underline ml-5 font-bold">Description:</CardDescription>
-      <CardContent>
-        <CardDescription className="line-clamp-2">{description}</CardDescription>
-      </CardContent>
-
-      <CardFooter className="mt-auto flex flex-col">
-        <Button className="w-full" size="sm" asChild>
-          <Link href={`/products/${name}`}>Détails</Link>
-        </Button>
-      </CardFooter>
-
-    </Card>
-
+      </Card>
+    </ErrorBoundary>
   )
-} export function ProductCardSkeleton() {
+}
+export function ProductCardSkeleton() {
   return (
     <Card className="overflow-hidden flex flex-col animate-pulse">
       <div className="w-full aspect-video bg-gray-300" />
