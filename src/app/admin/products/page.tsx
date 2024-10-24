@@ -66,9 +66,7 @@ async function ProductsTable() {
           <TableHead>Lait</TableHead>
           <TableHead>Unité</TableHead>
 
-          <TableHead className="w-0">
-            <span className="sr-only">Actions</span>
-          </TableHead>
+
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -105,11 +103,7 @@ async function ProductsTable() {
                   <span className="sr-only">Actions</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
-                    <a download href={`/admin/products/${product.id}/download`}>
-                      Download
-                    </a>
-                  </DropdownMenuItem>
+
                   <DropdownMenuItem asChild>
                     <Link href={`/admin/products/${product.id}/edit`}>
                       Edit
