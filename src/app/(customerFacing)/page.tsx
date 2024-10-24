@@ -3,6 +3,7 @@ import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import ProductsFilterMilks from "@/components/ProductsFilterMilks"
 import ProductsFilterPasteCheese from "@/components/ProductsFilterPaste"
 import { Button } from "@/components/ui/button"
+import { NavigationMenu } from "@/components/ui/NavigationMenu"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
 import { Product } from "@prisma/client"
@@ -34,8 +35,8 @@ const getNewestProducts = cache(() => {
 export default function HomePage() {
   return (
     <main className="space-y-12 ">
-      <div className="h-18 flex flex-row justify-end items-center gap-2">
-        <h2 className="">Filtrer par:</h2>
+      <div className="h-18 flex flex-col justify-end items-center gap-2 md:flex-row">
+        <h2 className="">Filtré par:</h2>
         <div className="flex justify-center"><ProductsFilterMilks /></div>
         <div className="flex justify-center"><ProductsFilterPasteCheese /></div>
       </div>
@@ -55,7 +56,7 @@ function ProductGridSection({
   title,
 }: ProductGridSectionProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
       <div className="flex gap-4">
         <h2 className="text-3xl font-bold">{title}</h2>
         <Button variant="outline" asChild>

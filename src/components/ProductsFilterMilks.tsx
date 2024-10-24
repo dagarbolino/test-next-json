@@ -35,7 +35,7 @@ export default function ProductsFilterMilks() {
 async function MilkTypesList() {
   const milkTypes = await getProductsFilterMilks()
   return (
-    <div className="flex flex-row mx-10 gap-4 w-full ">
+    <div className="flex flex-col mx-10 gap-4 w-full ">
       {milkTypes.map((milkType) => (
         <DropdownMenuItem key={milkType.name} asChild className={cn("w-full mx-6")}>
           <Link href={`/milks/${encodeURIComponent(milkType.name)}`} className="w-40 mt-4 text-left underline">

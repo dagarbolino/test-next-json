@@ -11,12 +11,18 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return <>
-      <Nav>
-        <Image src={logo} width={40} height={40} alt="Logo" />
-        <h1 className="flex justify-center items-center mx-auto">Page Client</h1>
-        <NavLink href="/">Dashboard</NavLink>
-        <NavLink href="/products">Products</NavLink>
-      </Nav>
+    <Nav>
+      <div className="h-36 flex flex-col justify-center items-center gap-2 md:w-full md:flex-row md:justify-between md:items-center ">
+        <div className="flex flex-row justify-center items-center gap-2">
+          <Image src={logo} width={40} height={40} alt="Logo" />
+          <h1 className="flex justify-center items-center mx-auto">Page Client</h1>
+        </div>
+        <div className="flex flex-row justify-center items-center gap-2">
+          <NavLink href="/">Dashboard</NavLink>
+          <NavLink href="/products">Products</NavLink>
+        </div>
+      </div>
+    </Nav>
     <div className="container my-6 ">{children}</div>
   </>
 }
