@@ -24,7 +24,7 @@ export default async function MilkTypePage({ params }: { params: { idMilk: strin
             Aucun produit disponible pour ce type de lait actuellement.
           </p>
           <p className="mt-4">
-            N&rsquo;hésitez pas à revenir plus tard pour découvrir nos nouveaux produits !
+            Hésitez pas à revenir plus tard pour découvrir nos nouveaux produits !
           </p>
         </div>
       </div>
