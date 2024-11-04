@@ -21,7 +21,7 @@ function AdminDashboard() {
       fetch('/admin/_actions/dashboard')
         .then(response => response.json())
         .then(data => setProductData(data))
-        .catch(error => console.error('Error fetching data:', error))
+        .catch(error => console.error('Error:', error))
     }
 
     fetchData()
