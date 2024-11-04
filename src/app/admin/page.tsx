@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import {
   Card,
   CardContent,
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { formatNumber } from "@/lib/formatters"
-import { useEffect, useState } from 'react'
 
 function AdminDashboard() {
   const [productData, setProductData] = useState({
@@ -17,18 +17,14 @@ function AdminDashboard() {
   })
 
   useEffect(() => {
-    async function fetchProductData() {
-      try {
-        const response = await fetch('/admin/_actions/dashboard')
-        if (!response.ok) throw new Error('Network response was not ok')
-        const data = await response.json()
-        setProductData(data)
-      } catch (error) {
-        console.error('Error fetching product data:', error)
-      }
+    const fetchData = () => {
+      fetch('/admin/_actions/dashboard')
+        .then(response => response.json())
+        .then(data => setProductData(data))
+        .catch(error => console.error('Error fetching data:', error))
     }
 
-    fetchProductData()
+    fetchData()
   }, [])
 
   return (
