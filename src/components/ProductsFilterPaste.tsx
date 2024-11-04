@@ -1,47 +1,51 @@
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { Button } from "./ui/button";
-import db from "@/db/db"
-import { cache } from "@/lib/cache"
-import { Suspense } from "react"
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+"use client"
 
-
-const getProductsFilterPasteCheese = cache(() => {
-  return db.categoriesPasteCheese.findMany()
-}, ["/", "getProductsFiltercategoriesPasteCheese"])
+import { useState, useEffect } from 'react'
+import { Button } from "./ui/button"
+import Link from 'next/link'
+import { getPasteTypes } from "@/app/_actions/paste-actions"
 
 export default function ProductsFilterPasteCheese() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [pasteTypes, setPasteTypes] = useState<{ id: string; name: string; createdAt: Date; updatedAt: Date; }[]>([])
+
+  useEffect(() => {
+    getPasteTypes().then(setPasteTypes)
+  }, [])
+
   return (
-    <div className="flex justify-center">
-      <Button variant="outline" asChild>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="border-2 hover:border-orange-400 rounded-md  p-2">Types de pâte</DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <Suspense fallback={<DropdownMenuItem>Chargement...</DropdownMenuItem>}>
-              <PasteCheesesList />
-            </Suspense>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="relative">
+      <Button 
+        variant="outline" 
+        onClick={() => setIsOpen(!isOpen)}
+        className="border-2 rounded-md p-2"
+      >
+        Types de pâtes
       </Button>
+
+      {isOpen && (
+        <>
+          <div 
+            className="fixed inset-0 bg-black/50 z-40" 
+            onClick={() => setIsOpen(false)} 
+          />
+          <div className="absolute top-full mt-2 bg-white rounded-md shadow-lg z-50 min-w-[200px]">
+            <nav className="flex flex-col p-2">
+              {pasteTypes.map((type) => (
+                <Link 
+                  key={type.id}
+                  href={`/paste/${encodeURIComponent(type.name)}`}
+                  className="px-4 py-2 hover:bg-gray-100 rounded-md"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {type.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </>
+      )}
     </div>
   )
 }
-
-async function PasteCheesesList() {
-  const pasteCheeses = await getProductsFilterPasteCheese()
-  return (
-    <div className="flex flex-row mx-10 gap-4 w-full">
-      {pasteCheeses.map((pasteCheese) => (
-        <DropdownMenuItem key={pasteCheese.name} asChild className={cn("w-full mx-6")}>
-          <Link href={`/paste/${encodeURIComponent(pasteCheese.name)}`} className="w-40 mt-4 text-left underline">
-            {pasteCheese.name}
-          </Link>
-        </DropdownMenuItem>
-      ))}
-    </div>
-  )
-}
-
-
 

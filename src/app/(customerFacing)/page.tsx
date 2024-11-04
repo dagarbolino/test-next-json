@@ -1,10 +1,8 @@
 
-
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import ProductsFilterMilks from "@/components/ProductsFilterMilks"
 import ProductsFilterPasteCheese from "@/components/ProductsFilterPaste"
 import { Button } from "@/components/ui/button"
-import { NavigationMenu } from "@/components/ui/NavigationMenu"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
 import { Product } from "@prisma/client"
