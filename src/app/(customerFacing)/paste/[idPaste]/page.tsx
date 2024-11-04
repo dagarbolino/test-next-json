@@ -1,28 +1,8 @@
 import { ProductCard } from "@/components/ProductCard"
-import db from "@/db/db"
-import { cache } from "@/lib/cache"
+import { getAllProducts } from "./[idPaste]"
 
-const getAllProducts = cache(
-  async () => {
-    const products = await db.product.findMany({
-      where: {
-        isAvailableForPurchase: true
-      },
-      include: { 
-        categoriesMilks: true,
-        categoriesPasteCheese: true,
-        unitType: true
-      },
-      orderBy: {
-        updatedAt: 'desc'
-      }
-    })
-    return products
-  },
-  ["allProducts"],
-  { revalidate: 1 }
-)
-export default async function MilkTypePage({ params }: { params: { idPaste: string } }) {
+
+export default async function PasteTypePage({ params }: { params: { idPaste: string } }) {
   console.log("Params complets reçus:", params);
 
   const allProducts = await getAllProducts()

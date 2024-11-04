@@ -1,28 +1,10 @@
-import { ProductCard } from "@/components/ProductCard"
-import db from "@/db/db"
-import { cache } from "@/lib/cache"
 
-const getAllProducts = cache(
-  async () => {
-    try {
-      const products = await db.product.findMany({
-        where: { isAvailableForPurchase: true },
-        include: { 
-          categoriesMilks: true,
-          categoriesPasteCheese: true,
-          unitType: true
-        },
-        orderBy: { updatedAt: 'desc' }
-      })
-      return products
-    } catch (error) {
-      console.error('Erreur lors de la récupération des produits:', error)
-      return []
-    }
-  },
-  ["allProducts"],
-  { revalidate: 1 }
-)
+
+
+import { ProductCard } from "@/components/ProductCard"
+import { getAllProducts } from "./[idMilk]"
+
+
 
 
 export default async function MilkTypePage({ params }: { params: { idMilk: string } }) {
@@ -42,7 +24,7 @@ export default async function MilkTypePage({ params }: { params: { idMilk: strin
             Aucun produit disponible pour ce type de lait actuellement.
           </p>
           <p className="mt-4">
-            N'hésitez pas à revenir plus tard pour découvrir nos nouveaux produits !
+            N&rsquo;hésitez pas à revenir plus tard pour découvrir nos nouveaux produits !
           </p>
         </div>
       </div>

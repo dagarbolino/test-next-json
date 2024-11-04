@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   Card,
@@ -7,24 +7,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import db from "@/db/db"
-import { formatCurrency, formatNumber } from "@/lib/formatters"
+import { formatNumber } from "@/lib/formatters"
+import { useEffect, useState } from 'react'
 
+function AdminDashboard() {
+  const [productData, setProductData] = useState({
+    activeCount: 0,
+    inactiveCount: 0
+  })
 
+  useEffect(() => {
+    async function fetchProductData() {
+      try {
+        const response = await fetch('/admin/_actions/dashboard')
+        if (!response.ok) throw new Error('Network response was not ok')
+        const data = await response.json()
+        setProductData(data)
+      } catch (error) {
+        console.error('Error fetching product data:', error)
+      }
+    }
 
-async function getProductData() {
-  const [activeCount, inactiveCount] = await Promise.all([
-    db.product.count({ where: { isAvailableForPurchase: true } }),
-    db.product.count({ where: { isAvailableForPurchase: false } }),
-  ])
-
-  return { activeCount, inactiveCount }
-}
-
-export default async function AdminDashboard() {
-  const [productData] = await Promise.all([
-    getProductData(),
-  ])
+    fetchProductData()
+  }, [])
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -37,13 +42,11 @@ export default async function AdminDashboard() {
   )
 }
 
-type DashboardCardProps = {
+function DashboardCard({ title, subtitle, body }: {
   title: string
   subtitle: string
   body: string
-}
-
-function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
+}) {
   return (
     <Card>
       <CardHeader>
@@ -56,3 +59,5 @@ function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
     </Card>
   )
 }
+
+export default AdminDashboard
